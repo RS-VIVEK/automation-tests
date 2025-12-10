@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/rsvis/IdeaProjects/AutomationTestSelenium">
+        <classes>
+            <class name="tests.LogoutTestHRM">
+                <methods>
+                    <include name="testValidLogoutHRM"/>
+                </methods>
+            </class>
+            <class name="tests.loginTestHRM">
+                <methods>
+                    <include name="testValidLogin"/>
+                </methods>
+            </class>
+            <class name="tests.loginTestHeroKu">
+                <methods>
+                    <include name="TestLogin"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>
