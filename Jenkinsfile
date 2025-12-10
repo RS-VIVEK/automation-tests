@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/your-org/your-repo.git', branch: 'main'
+                // Use your actual repo URL here
+                git url: 'https://github.com/RS-VIVEK/automation-tests.git', branch: 'main'
             }
         }
         stage('Build Docker Image') {
@@ -13,12 +14,17 @@ pipeline {
         }
         stage('Run Tests in Docker') {
             steps {
-                bat 'docker run --rm automation-tests'
+                // Mount Jenkins workspace/target to container /app/target
+                bat 'docker run --rm -v %WORKSPACE%\\target:/app/target automation-tests'
             }
         }
         stage('Publish Reports') {
             steps {
+                // If using Maven Surefire plugin (JUnit-style XMLs)
                 junit '**/target/surefire-reports/*.xml'
+
+                // If you prefer TestNG native reports, install TestNG plugin and use:
+                // testng '**/test-output/testng-results.xml'
             }
         }
     }
