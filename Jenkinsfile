@@ -1,22 +1,26 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/RS-VIVEK/automation-tests.git', branch: 'main'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t automation-tests .'
             }
         }
+
         stage('Run Tests in Docker') {
             steps {
                 // Mount Jenkins workspace/target to container /app/target
-                bat 'docker run --rm -v %WORKSPACE%\\target:/app/target automation-tests'
+                bat 'docker run --rm -v %WORKSPACE%\\target:/app/target automation-tests mvn test -DsuiteXmlFile=testng.xml'
             }
         }
+
         stage('Publish Reports') {
             steps {
                 // If using Maven Surefire plugin (JUnit-style XMLs)
@@ -24,11 +28,12 @@ pipeline {
 
                 // If you want TestNG native reports instead:
                 // 1. Install "TestNG Results Plugin" in Jenkins
-                // 2. Use:
+                // 2. Uncomment below:
                 // testng '**/test-output/testng-results.xml'
             }
         }
     }
+
     post {
         always {
             echo "Build finished with status: ${currentBuild.currentResult}"
